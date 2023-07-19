@@ -126,3 +126,32 @@ Check reconciliation status:
 tanzu package installed list -n tap-install
 ```
 
+# Set DNS wildcard
+
+Retrieve envoy ingress external IP:
+```bash
+kubectl get service envoy -n tanzu-system-ingress
+
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+envoy   LoadBalancer   100.70.189.170   10.220.36.4   80:30293/TCP,443:32602/TCP   8m16s 
+```
+
+and set you DNS with a wildcard to your domain
+
+*.h2o-4-7299.h2o.vmware.com >> 10.220.36.4
+
+
+
+# Connect to TAP GUI
+
+Retrieve TAP full domain path:
+```bash
+k get httpproxy -A | grep tap-gui
+
+tap-gui          tap-gui                  tap-gui.h2o-4-7299.h2o.vmware.com                   tap-gui-cert   valid    Valid HTTPProxy
+```
+
+Open browser at: 
+tap-gui.h2o-4-7299.h2o.vmware.com
+
+
