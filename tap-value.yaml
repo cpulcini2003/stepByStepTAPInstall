@@ -1,0 +1,112 @@
+profile: full
+
+contour:
+  envoy:
+    service:
+      type: LoadBalancer
+
+shared:
+  ingress_domain: h2o-4-14352.h2o.vmware.com
+  image_registry:
+    project_path: 10.*.*.244/test-env/t-a-p
+    username: administrator@vsphere.local
+    password: xfZOgg$97u9V8FhP7Ih
+  kubernetes_distribution: ""
+  kubernetes_version: 1.23.8
+  ca_cert_data: | # To be passed if using custom certificates.
+      -----BEGIN CERTIFICATE-----
+      MIIENzCCAx+gAwIBAgIJAM0OAtG4XT3hMA0GCSqGSIb3DQEBCwUAMIGmMQswCQYD
+      VQQDDAJDQTEXMBUGCgmSJomT8ixkARkWB3ZzcGhlcmUxFTATBgoJkiaJk/IsZAEZ
+      FgVsb2NhbDELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExKDAmBgNV
+      BAoMH3ZjMDEuaDJvLTQtMTQzNTIuaDJvLnZtd2FyZS5jb20xGzAZBgNVBAsMElZN
+      d2FyZSBFbmdpbmVlcmluZzAeFw0yMzA2MjkxMTA4MTBaFw0zMzA2MjYxMTA4MTBa
+      MIGmMQswCQYDVQQDDAJDQTEXMBUGCgmSJomT8ixkARkWB3ZzcGhlcmUxFTATBgoJ
+      kiaJk/IsZAEZFgVsb2NhbDELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3Ju
+      aWExKDAmBgNVBAoMH3ZjMDEuaDJvLTQtMTQzNTIuaDJvLnZtd2FyZS5jb20xGzAZ
+      BgNVBAsMElZNd2FyZSBFbmdpbmVlcmluZzCCASIwDQYJKoZIhvcNAQEBBQADggEP
+      ADCCAQoCggEBAKmr4LH5EDl/vrM6OqJCStm9OVxyf8n2W/44mLmENlLITpW6KZry
+      KzuyphhFdLC6mvVsOdh3uE26dxLOuBhEaeUlDqKS0g1G2Ks12nys2r6ZRP0Pmcdm
+      6DG3a+xCeTTZBvzuBJxAwuPZxzOAKSOLoAM5B/sAdKyvNEWeJeivWeRFOJESHM/J
+      uONxNaIQarvm9d6BOQ7P30bsZY5lcNTrgU5Tg+laL1CN5EdCC79/nZrqAL5NGDwg
+      asm7VjreUGglUYtdqUsMdq4bgULOatFy2hVgOGz8VonDjWXP8bxNqfEzM8by/5y7
+      p8S4g49pMH21v+qbHj1/1qZ12U69tOcGwxUCAwEAAaNmMGQwHQYDVR0OBBYEFPG5
+      kRDRDwMKENjtwayyHQHFhnHXMB8GA1UdEQQYMBaBDmVtYWlsQGFjbWUuY29thwR/
+      AAABMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEAMA0GCSqGSIb3
+      DQEBCwUAA4IBAQBhOyJJBPNmLWMqkpF6GezemaxWedIVpDxDpPIK9WK1JbK0oGbW
+      kFOPhUeqGM7Q135Cd8DFKcOOqmOsO710iJ7lF6WW2V9wixE85z5xn3JqDvi8m7gz
+      Ktn53A+hyEmTafY5blh3HuBvpRlSBM9f8EQP/b1DA9T3YalOPo/OsN8Uh4OUoZYJ
+      vee7O1v5AD3D8yjeylDshdBcVa7RB8yJ31g8LxsUOCiZtpe0SfywABxpQmvYY51C
+      Nlo7YheA33zPMEtNtEbF9og9b08bgOkki9Kt5RXe98+ODjb1AAy3PEoPF+9Tf6Rx
+      V9WvWuKnqxet6CqLXgy9PAtT8EeVIOuEIsj7
+      -----END CERTIFICATE-----
+
+ceip_policy_disclosed: true
+
+policy:
+  tuf_enabled: false
+
+# supply_chain: testing_scanning
+supply_chain: basic
+
+ootb_supply_chain_basic:
+# ootb-supply-chain-testing-scanning:
+  registry:
+    server: 10.*.*.244
+    repository: test-env/tap
+  gitops:
+    ssh_secret: ""
+  cluster_builder: full
+  service_account: default
+  scanning:
+    policy: scan-policy
+    template: blob-source-scan-template
+  image:
+    policy: scan-policy
+    template: private-image-scan-template
+
+buildservice:
+  kp_default_repository: 10.*.*.244/test-env/buildservice
+  kp_default_repository_username: administrator@vsphere.local
+  kp_default_repository_password: xfZOgg$97u9V8FhP7Ih
+  exclude_dependencies: true
+
+learningcenter:
+  ingressDomain: learning.h2o-4-14352.h2o.vmware.com
+  ingressClass: contour
+
+tap_gui:
+  service_type: ClusterIP
+  app_config:
+    app:
+      baseUrl: https://tap-gui.h2o-4-14352.h2o.vmware.com
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/kubeages/tap-files/blob/main/blank/catalog-info.yaml # catalog-info.yaml needs to be in a repo, you can use mine or clone it to your own repo
+    backend:
+      baseUrl: https://tap-gui.h2o-4-14352.h2o.vmware.com
+      cors:
+        origin: https://tap-gui.h2o-4-14352.h2o.vmware.com
+    # proxy:
+    #   /metadata-store:
+    #     target: https://metadata-store-app.metadata-store:8443/api/v1
+    #     changeOrigin: true
+    #     secure: false
+    #     headers:
+    #       Authorization: "Bearer "
+    #       X-Custom-Source: project-star
+
+metadata_store:
+  ns_for_export_app_cert: "*"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: ""
+
+grype:
+  targetImagePullSecret: "registry-credentials"
+
+appliveview:
+  ingressEnabled: true
+  ingressDomain: appliveview.h2o-4-14352.h2o.vmware.com

@@ -96,6 +96,11 @@ tanzu package repository get tbs-full-deps-repository --namespace tap-install
 
 ## Prepare tap value yaml file
 
+A sample tap-value.yaml file for a single cluster TAP implementation is provided in the currenr git repo.
+
+https://github.com/cpulcini2003/stepByStepTAPInstall
+
+Please modify accordingly with your configuration and proceed with next steps
 
 
 ## Install TAP & TBS Packages
@@ -121,6 +126,3 @@ Check reconciliation status:
 tanzu package installed list -n tap-install
 ```
 
-
-
-# stepByStepTAPInstall
