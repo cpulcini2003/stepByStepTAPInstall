@@ -155,3 +155,20 @@ Open browser at:
 tap-gui.h2o-4-7299.h2o.vmware.com
 
 
+# Create Developer namespace
+
+Create Namespace
+```bash
+k create ns cpu
+```
+
+# Add label to let the system creare secret, sa and rolebindings
+
+Create label and check
+```bash
+k label namespace cpu apps.tanzu.vmware.com/tap-ns=""
+k get secret,serviceaccount,rolebinding,pods,workload,configmap -n cpu
+
+
+```
+
